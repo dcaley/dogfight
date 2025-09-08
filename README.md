@@ -1,16 +1,13 @@
-# dogfight
+# Dogfight
 
-A new Flutter project.
+A Flame tech demo 
 
-## Getting Started
+A bit of history here.  A very long time ago, I played a game for the Apple II called Dogfight.  You can still play it here: https://archive.org/details/wozaday_Dogfight_II
 
-This project is a starting point for a Flutter application.
+Not much to look at these days, but having that many independent sprites was impressive for the time.
 
-A few resources to get you started if this is your first Flutter project:
+Circa 2000 I decided to create my own version, which I implemented as a Java Applet (anyone else remember those?)  I quickly discovered that playing it wasn't much fun, but giving the planes rules and watching them chase each other around, was.  Sadly I no longer seem to have a copy of that version, not that I would be too excited about trying to get an applet to run in 2025.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Much more recently, I have been using [Flutter](https://flutter.dev/) for both work and my own projects, and I thought it was time to have some fun with its graphics and animation capabilities.  The [Flame Engine](https://flame-engine.org/) seemed to do exactly what I wanted, so this became a demo of that technology.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+I'm pretty happy with the results.  Flame is easy to learn, performant and very full-featured.  There's lots more I can do here, so we'll see where it takes me.

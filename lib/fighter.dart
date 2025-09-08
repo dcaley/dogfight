@@ -18,7 +18,8 @@ class Fighter extends Flyer{
   bool alive = true;
   // how long after we are killed until we reset
   double deathTimer = 0;
-  final maxDeathTimer = 2.0;
+  final maxDeathTimer = 4.0;
+  Vector2 velocityWhenKilled = Vector2.zero();
 
   Fighter({required super.team}) : super(
     maxSpeed: 10,
@@ -42,7 +43,9 @@ class Fighter extends Flyer{
 
     if(alive) {
       // pick a new target if we don't have one
-      target ??= pickTarget();
+      if(target==null || !target!.alive) {
+        target = pickTarget();
+      }
 
       if (locked && missile == null) {
         missile = Missile(
@@ -69,7 +72,8 @@ class Fighter extends Flyer{
       }
     }
     else{
-      // if we're dead, count out the clock then respawn
+      angle += turnRate*2;
+      // count out the clock then respawn
       deathTimer += dt;
       if(deathTimer>maxDeathTimer){
         reset();
@@ -113,12 +117,10 @@ class Fighter extends Flyer{
   }
 
   kill(){
+    velocityWhenKilled = velocity.clone();
     deathTimer = 0;
     alive = false;
     target = null;
-    // any fighters targeting us need to pick a new target
-    // should probably move this to update on the target
-    game.fighters.where((f) => f.target == this).forEach((f) => f.target = null);
   }
 
   // pick a random, live target
@@ -149,4 +151,11 @@ class Fighter extends Flyer{
 
   @override
   Particle get trailParticle => FighterTrailParticle(alive: alive);
+
+  @override
+  Vector2 get trailOffset => alive ? super.trailOffset : Vector2(Random().nextDouble()*20, 0)..rotate(Random().nextDouble()*2*pi);
+
+  // enter a spin when killed
+  @override
+  Vector2 get velocity => alive ? super.velocity : velocityWhenKilled;
 }

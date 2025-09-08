@@ -53,7 +53,7 @@ abstract class Flyer extends SpriteComponent with HasGameReference<Dogfight>, Co
 
     game.world.add(
       ParticleSystemComponent(
-        position: position.clone(),
+        position: trailOffset.translated(position.x, position.y),
         particle: trailParticle,
         priority: 0,
       ),
@@ -65,4 +65,6 @@ abstract class Flyer extends SpriteComponent with HasGameReference<Dogfight>, Co
   Vector2 get velocity => Vector2(speed*sin(angle), -speed*cos(angle));
 
   Particle get trailParticle;
+
+  Vector2 get trailOffset => Vector2.zero();
 }
