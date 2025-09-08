@@ -9,9 +9,9 @@ import 'fighter.dart';
 
 abstract class Flyer extends SpriteComponent with HasGameReference<Dogfight>, CollisionCallbacks{
 
-  final int team;
-  Fighter? target;
   double speed;
+  Fighter? target;
+  final int team;
   final double maxSpeed;
   final double minSpeed;
   final double acceleration;

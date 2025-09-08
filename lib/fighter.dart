@@ -12,10 +12,13 @@ import 'missile.dart';
 
 class Fighter extends Flyer{
 
-  double range = 300;
+  // distance to the targeting reticle
+  final range = 300;
   Missile? missile;
   bool alive = true;
+  // how long after we are killed until we reset
   double deathTimer = 0;
+  final maxDeathTimer = 2.0;
 
   Fighter({required super.team}) : super(
     maxSpeed: 10,
@@ -38,19 +41,23 @@ class Fighter extends Flyer{
   void update(double dt) {
 
     if(alive) {
+      // pick a new target if we don't have one
       target ??= pickTarget();
 
       if (locked && missile == null) {
-        missile = Missile(team: team,
-            position: position.clone(),
-            speed: speed,
-            angle: angle,
-            launcher: this,
-            target: target);
+        missile = Missile(
+          team: team,
+          position: position.clone(),
+          speed: speed,
+          angle: angle,
+          launcher: this,
+          target: target,
+        );
         game.world.add(missile!);
       }
 
       if (target != null) {
+        // too close to the target, slow down.  too far, speed up
         if (distance(target!) > range) {
           speed += acceleration;
           speed = min(speed, maxSpeed);
@@ -62,8 +69,9 @@ class Fighter extends Flyer{
       }
     }
     else{
+      // if we're dead, count out the clock then respawn
       deathTimer += dt;
-      if(deathTimer>2){
+      if(deathTimer>maxDeathTimer){
         reset();
       }
     }
@@ -75,6 +83,7 @@ class Fighter extends Flyer{
   void render(Canvas canvas) {
     super.render(canvas);
 
+    // paint the target lock
     if(this==game.fighters.first.target){
       canvas.save();
       canvas.translate(width/2, height/2);
@@ -83,7 +92,6 @@ class Fighter extends Flyer{
         ..color = Colors.green
         ..strokeWidth = 3
         ..style = PaintingStyle.stroke;
-
       for(int i=0; i<4; i++) {
         canvas.save();
         canvas.rotate(i*pi/2);
@@ -95,6 +103,7 @@ class Fighter extends Flyer{
 
       canvas.restore();
     }
+    // paint the reticle
     else if(this==game.fighters.first) {
       canvas.drawCircle(Offset(width/2, height/2 - range), 20, Paint()
         ..color = locked ? Colors.red : Colors.white
@@ -108,6 +117,7 @@ class Fighter extends Flyer{
     alive = false;
     target = null;
     // any fighters targeting us need to pick a new target
+    // should probably move this to update on the target
     game.fighters.where((f) => f.target == this).forEach((f) => f.target = null);
   }
 

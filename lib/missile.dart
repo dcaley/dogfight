@@ -10,7 +10,9 @@ import 'missile_trail_particle.dart';
 
 class Missile extends Flyer{
 
-  Fighter launcher;
+  final Fighter launcher;
+  double flightTime = 0.0;
+  final maxFlightTime = 3.0;
 
   Missile({
     required super.team,
@@ -38,22 +40,22 @@ class Missile extends Flyer{
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
 
+    // can only kill the fighter we are targeting
     if(other==target){
       target!.kill();
       launcher.missile = null;
       removeFromParent();
     }
   }
-
-  double time = 0;
-
+  
   @override
   void update(double dt) {
     speed += acceleration;
     speed = min(speed, maxSpeed);
 
-    time += dt;
-    if(time>2){
+    flightTime += dt;
+    // despawn if we exceed our ttl
+    if(flightTime>maxFlightTime){
       launcher.missile = null;
       game.world.remove(this);
     }

@@ -14,6 +14,7 @@ class Dogfight extends FlameGame with HasCollisionDetection{
   @override
   Future<void> onLoad() async {
 
+    // populate the fighters, should really do something cleaner with teams
     for (int i = 0; i < teamSize*2; i++) {
       final team = i%2;
       fighters.add(Fighter(team: team));
@@ -39,22 +40,5 @@ class Dogfight extends FlameGame with HasCollisionDetection{
   void update(double dt) {
     super.update(dt);
     parallax.baseVelocity.setFrom(fighters.first.velocity);
-  }
-}
-
-class Reticle extends PositionComponent with HasGameReference<Dogfight>{
-
-  double range;
-
-  Reticle(this.range);
-
-  final paint = Paint()
-    ..color = Colors.white
-    ..strokeWidth = 3
-    ..style = PaintingStyle.stroke;
-
-  @override
-  void render(Canvas canvas) {
-    canvas.drawCircle(Offset(0, -range), 20, paint);
   }
 }
