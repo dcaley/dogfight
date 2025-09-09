@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:dogfight/fighter_trail_particle.dart';
 import 'package:flame/collisions.dart';
-import 'package:flame/components.dart';
 import 'package:flame/experimental.dart';
+import 'package:flame/extensions.dart';
 import 'package:flame/particles.dart';
 import 'package:flutter/material.dart';
 
@@ -21,12 +21,11 @@ class Fighter extends Flyer{
   final maxDeathTimer = 4.0;
   Vector2 velocityWhenKilled = Vector2.zero();
 
-  Fighter({required super.team}) : super(
+  Fighter({required super.team, required super.spriteName}) : super(
     maxSpeed: 10,
     minSpeed: 1,
     speed: 10,
     acceleration: 0.1,
-    spriteName: team==1 ? "blueships1.png" : "redfighter0006.png",
     turnRate: pi/100,
     size: Vector2(50, 50),
   );
@@ -44,7 +43,7 @@ class Fighter extends Flyer{
     if(alive) {
       // pick a new target if we don't have one
       if(target==null || !target!.alive) {
-        target = pickTarget();
+        target = nextTarget;
       }
 
       if (locked && missile == null) {
@@ -88,7 +87,7 @@ class Fighter extends Flyer{
     super.render(canvas);
 
     // paint the target lock
-    if(this==game.fighters.first.target){
+    if(this==game.follow.target){
       canvas.save();
       canvas.translate(width/2, height/2);
       canvas.rotate(-angle);
@@ -108,7 +107,7 @@ class Fighter extends Flyer{
       canvas.restore();
     }
     // paint the reticle
-    else if(this==game.fighters.first) {
+    else if(this==game.follow) {
       canvas.drawCircle(Offset(width/2, height/2 - range), 20, Paint()
         ..color = locked ? Colors.red : Colors.white
         ..strokeWidth = 3
@@ -124,10 +123,7 @@ class Fighter extends Flyer{
   }
 
   // pick a random, live target
-  Fighter pickTarget(){
-    final otherTeam = game.fighters.where((p) => p.alive && p.team!=team).toList();
-    return otherTeam[Random().nextInt(otherTeam.length)];
-  }
+  Fighter get nextTarget => game.fighters.where((p) => p.alive && p.team!=team).toList().random();
 
   // is our target in the reticle?
   bool get locked{
