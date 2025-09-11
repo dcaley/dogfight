@@ -1,10 +1,10 @@
 import 'dart:math';
 
+import 'package:dogfight/dogfight.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/particles.dart';
 
-import 'dogfight.dart';
 import 'fighter.dart';
 
 abstract class Flyer extends SpriteComponent with HasGameReference<Dogfight>, CollisionCallbacks{

@@ -1,12 +1,13 @@
 import 'dart:math';
 
-import 'package:dogfight/flyer.dart';
+import 'package:dogfight/components/explosion.dart';
+import 'package:dogfight/particles/missile_trail_particle.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/particles.dart';
 
 import 'fighter.dart';
-import 'missile_trail_particle.dart';
+import 'flyer.dart';
 
 class Missile extends Flyer{
 
@@ -45,6 +46,7 @@ class Missile extends Flyer{
       target!.kill();
       launcher.missile = null;
       removeFromParent();
+      game.world.add(Explosion(position));
     }
   }
   

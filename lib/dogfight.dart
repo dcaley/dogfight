@@ -4,7 +4,7 @@ import 'package:flame/game.dart';
 import 'package:flame/parallax.dart';
 import 'package:flutter/material.dart';
 
-import 'fighter.dart';
+import 'components/fighter.dart';
 
 class Dogfight extends FlameGame with HasCollisionDetection{
 
@@ -32,11 +32,6 @@ class Dogfight extends FlameGame with HasCollisionDetection{
     camera.follow(follow);
   }
 
-  followNew(){
-    follow = fighters.where((f) => f.alive).toList().random();
-    camera.follow(follow, snap: false, maxSpeed: 1000);
-  }
-
   populateTeam(int team, String sprite){
     for (int i=0; i<teamSize; i++) {
       fighters.add(Fighter(team: team, spriteName: sprite));
@@ -50,7 +45,10 @@ class Dogfight extends FlameGame with HasCollisionDetection{
 
     // when the death animation is almost done, pan to and follow a different fighter
     if(!follow.alive && follow.deathTimer>follow.maxDeathTimer*0.75){
-      followNew();
+      // I'd like to follow the fighter that killed us,
+      // but that starts to get tricky when that fighter is also dead.
+      follow = fighters.where((f) => f.alive).toList().random();
+      camera.follow(follow, snap: false, maxSpeed: 1000);
     }
   }
 }

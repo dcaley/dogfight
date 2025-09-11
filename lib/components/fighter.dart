@@ -1,6 +1,7 @@
 import 'dart:math';
 
-import 'package:dogfight/fighter_trail_particle.dart';
+import 'package:dogfight/components/explosion.dart';
+import 'package:dogfight/particles/fighter_trail_particle.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/extensions.dart';
@@ -72,9 +73,10 @@ class Fighter extends Flyer{
     }
     else{
       angle += turnRate*2;
-      // count out the clock then respawn
+      // count out the clock then explode and respawn
       deathTimer += dt;
       if(deathTimer>maxDeathTimer){
+        game.world.add(Explosion(position));
         reset();
       }
     }
