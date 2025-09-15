@@ -117,7 +117,7 @@ class Fighter extends Flyer{
     }
   }
 
-  kill(){
+  void kill(){
     velocityWhenKilled = velocity.clone();
     deathTimer = 0;
     alive = false;
@@ -140,7 +140,7 @@ class Fighter extends Flyer{
   }
 
   // put us at a random angle 2000px from the origin
-  reset(){
+  void reset(){
     alive = true;
     angle = Random().nextDouble()*2*pi;
     x = 2000*sin(angle);

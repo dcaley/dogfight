@@ -32,7 +32,7 @@ class Dogfight extends FlameGame with HasCollisionDetection{
     camera.follow(follow);
   }
 
-  populateTeam(int team, String sprite){
+  void populateTeam(int team, String sprite){
     for (int i=0; i<teamSize; i++) {
       fighters.add(Fighter(team: team, spriteName: sprite));
     }
